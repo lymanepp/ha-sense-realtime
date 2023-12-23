@@ -1,0 +1,24 @@
+{
+  "domain": "sense_realtime",
+  "name": "Sense Realtime",
+  "codeowners": ["@lymanepp"],
+  "config_flow": true,
+  "dhcp": [
+    {
+      "hostname": "sense-*",
+      "macaddress": "009D6B*"
+    },
+    {
+      "hostname": "sense-*",
+      "macaddress": "DCEFCA*"
+    },
+    {
+      "hostname": "sense-*",
+      "macaddress": "A4D578*"
+    }
+  ],
+  "documentation": "https://github.com/lymanepp/ha-sense-realtime",
+  "iot_class": "cloud_push",
+  "loggers": ["sense_energy"],
+  "requirements": ["sense-energy==0.12.2"]
+}
