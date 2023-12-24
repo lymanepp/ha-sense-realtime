@@ -1,7 +1,9 @@
 {
   "domain": "sense_realtime",
   "name": "Sense Realtime",
-  "codeowners": ["@lymanepp"],
+  "codeowners": [
+    "@lymanepp"
+  ],
   "config_flow": true,
   "dhcp": [
     {
@@ -19,6 +21,12 @@
   ],
   "documentation": "https://github.com/lymanepp/ha-sense-realtime",
   "iot_class": "cloud_push",
-  "loggers": ["sense_energy"],
-  "requirements": ["sense-energy==0.12.2"]
+  "issue_tracker": "https://github.com/lymanepp/ha-sense-realtime/issues",
+  "loggers": [
+    "sense_energy"
+  ],
+  "requirements": [
+    "sense-energy==0.12.2"
+  ],
+  "version": "0.0.1"
 }
