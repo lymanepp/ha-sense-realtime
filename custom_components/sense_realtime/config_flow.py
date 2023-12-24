@@ -1,19 +1,18 @@
 """Config flow for Sense integration."""
-from collections.abc import Mapping
 import logging
+from collections.abc import Mapping
 from typing import Any
 
+import voluptuous as vol
+from homeassistant import config_entries
+from homeassistant.const import CONF_CODE, CONF_EMAIL, CONF_PASSWORD, CONF_TIMEOUT
+from homeassistant.data_entry_flow import FlowResult
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from sense_energy import (
     ASyncSenseable,
     SenseAuthenticationException,
     SenseMFARequiredException,
 )
-import voluptuous as vol
-
-from homeassistant import config_entries
-from homeassistant.const import CONF_CODE, CONF_EMAIL, CONF_PASSWORD, CONF_TIMEOUT
-from homeassistant.data_entry_flow import FlowResult
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import ACTIVE_UPDATE_RATE, DEFAULT_TIMEOUT, DOMAIN, SENSE_CONNECT_EXCEPTIONS
 
