@@ -1,0 +1,36 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to your Sense Energy Monitor",
+        "data": {
+          "email": "Email",
+          "password": "Password",
+          "timeout": "Timeout"
+        }
+      },
+      "validation": {
+        "title": "Sense Multi-factor authentication",
+        "data": {
+          "code": "Verification code"
+        }
+      },
+      "reauth_validate": {
+        "title": "Reauthenticate integration",
+        "description": "The Sense integration needs to re-authenticate your account {email}.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "Invalid authentication",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Device is already configured",
+      "reauth_successful": "Re-authentication was successful"
+    }
+  }
+}
