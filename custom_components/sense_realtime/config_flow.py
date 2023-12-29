@@ -22,7 +22,7 @@ DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_EMAIL): str,
         vol.Required(CONF_PASSWORD): str,
-        vol.Optional(CONF_TIMEOUT, default=DEFAULT_TIMEOUT): vol.Coerce(int),
+        vol.Optional(CONF_TIMEOUT, default=DEFAULT_TIMEOUT): vol.Coerce(int),  # type: ignore
     }
 )
 
@@ -57,6 +57,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def create_entry_from_data(self):
         """Create the entry from the config data."""
+        assert self._gateway is not None
         self._auth_data["access_token"] = self._gateway.sense_access_token
         self._auth_data["user_id"] = self._gateway.sense_user_id
         self._auth_data["device_id"] = self._gateway.device_id
@@ -93,6 +94,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_validation(self, user_input=None):
         """Handle validation (2fa) step."""
+        assert self._gateway is not None
         errors = {}
         if user_input:
             try:
