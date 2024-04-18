@@ -2,7 +2,7 @@
     "name": "Sense Realtime",
     "filename": "sense_realtime.zip",
     "hide_default_branch": true,
-    "homeassistant": "2023.12.3",
+    "homeassistant": "2024.4.0",
     "render_readme": true,
-    "zip_release": true
+    "zip_release": false
 }
