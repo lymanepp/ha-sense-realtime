@@ -1,12 +1,12 @@
 """Config flow for Sense integration."""
+
 import logging
 from collections.abc import Mapping
 from typing import Any
 
 import voluptuous as vol
-from homeassistant import config_entries
+from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_CODE, CONF_EMAIL, CONF_PASSWORD, CONF_TIMEOUT
-from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from sense_energy import (
     ASyncSenseable,
@@ -22,12 +22,12 @@ DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_EMAIL): str,
         vol.Required(CONF_PASSWORD): str,
-        vol.Optional(CONF_TIMEOUT, default=DEFAULT_TIMEOUT): vol.Coerce(int),  # type: ignore
+        vol.Optional(CONF_TIMEOUT, default=DEFAULT_TIMEOUT): vol.Coerce(int),
     }
 )
 
 
-class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+class SenseConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Sense."""
 
     VERSION = 1
@@ -57,7 +57,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def create_entry_from_data(self):
         """Create the entry from the config data."""
-        assert self._gateway is not None
         self._auth_data["access_token"] = self._gateway.sense_access_token
         self._auth_data["user_id"] = self._gateway.sense_user_id
         self._auth_data["device_id"] = self._gateway.device_id
@@ -69,11 +68,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 title=self._auth_data[CONF_EMAIL], data=self._auth_data
             )
 
-        self.hass.config_entries.async_update_entry(
-            existing_entry, data=self._auth_data
-        )
-        await self.hass.config_entries.async_reload(existing_entry.entry_id)
-        return self.async_abort(reason="reauth_successful")
+        return self.async_update_reload_and_abort(existing_entry, data=self._auth_data)
 
     async def validate_input_and_create_entry(self, user_input, errors):
         """Validate the input and create the entry from the data."""
@@ -94,7 +89,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_validation(self, user_input=None):
         """Handle validation (2fa) step."""
-        assert self._gateway is not None
         errors = {}
         if user_input:
             try:
@@ -126,7 +120,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user", data_schema=DATA_SCHEMA, errors=errors
         )
 
-    async def async_step_reauth(self, entry_data: Mapping[str, Any]) -> FlowResult:
+    async def async_step_reauth(
+        self, entry_data: Mapping[str, Any]
+    ) -> ConfigFlowResult:
         """Handle configuration by re-auth."""
         self._auth_data = dict(entry_data)
         return await self.async_step_reauth_validate(entry_data)
